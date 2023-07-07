@@ -1,6 +1,5 @@
 package com.empdirectory.crudproj.rest;
 
-import com.empdirectory.crudproj.dao.EmployeeDAO;
 import com.empdirectory.crudproj.entity.Employee;
 import com.empdirectory.crudproj.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
