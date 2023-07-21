@@ -19,7 +19,6 @@ import java.util.UUID;
 @RestController
 public class BeerController {
     private final BeerService beerService;
-
     public static final String BEER_PATH = "/api/v1/beer";
     public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
     @PatchMapping(BEER_PATH_ID)
@@ -55,9 +54,10 @@ public class BeerController {
     public List<Beer> listBeers(){
         return beerService.listBeers();
     }
+
     @GetMapping(BEER_PATH_ID)
     public Beer getBeerById(@PathVariable("beerId") UUID id){
         log.debug("Get Beer by Id - in controller");
-        return beerService.getBeerById(id);
+        return beerService.getBeerById(id).orElseThrow(NotFoundException::new);
     }
 }
