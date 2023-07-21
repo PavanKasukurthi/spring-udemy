@@ -3,6 +3,7 @@ package com.springframework.controller;
 import com.springframework.model.Beer;
 import com.springframework.service.BeerService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,13 +15,13 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 public class BeerController {
     private final BeerService beerService;
 
-    private static final String BEER_PATH = "/api/v1/beer";
-    private static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
+    public static final String BEER_PATH = "/api/v1/beer";
+    public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
     @PatchMapping(BEER_PATH_ID)
     public ResponseEntity updateBeerPatchById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
         beerService.patchBeerById(beerId, beer);

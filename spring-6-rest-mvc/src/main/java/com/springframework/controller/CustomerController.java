@@ -3,6 +3,7 @@ package com.springframework.controller;
 import com.springframework.model.Customer;
 import com.springframework.service.CustomerService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -13,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 public class CustomerController {
     @Autowired
     CustomerService customerService;
 
-    private static final String CUSTOMER_PATH = "/api/v1/customer";
-    private static final String CUSTOMER_PATH_ID = CUSTOMER_PATH + "/{customerId}";
+    public static final String CUSTOMER_PATH = "/api/v1/customer";
+    public static final String CUSTOMER_PATH_ID = CUSTOMER_PATH + "/{customerId}";
 
     @PatchMapping(CUSTOMER_PATH_ID)
     public ResponseEntity patchById(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer){
