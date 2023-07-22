@@ -1,6 +1,7 @@
 package com.springframework.controller;
 
 import com.springframework.entities.Beer;
+import com.springframework.mappers.BeerMapper;
 import com.springframework.model.BeerDTO;
 import com.springframework.repositories.BeerRepository;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,9 @@ class BeerControllerIT {
     BeerController beerController;
     @Autowired
     BeerRepository beerRepository;
+
+    @Autowired
+    BeerMapper beerMapper;
 
     @Test
     void testListBeers() {
@@ -74,5 +78,53 @@ class BeerControllerIT {
         Beer beer = beerRepository.findById(savedUUID).get();
 
         assertThat(beer).isNotNull();
+    }
+    @Rollback
+    @Transactional
+    @Test
+    void updateExistingBeer() {
+        Beer beer = beerRepository.findAll().get(0);
+        BeerDTO beerDTO = beerMapper.beerToBeerDto(beer);
+        beerDTO.setId(null);
+        beerDTO.setVersion(null);
+
+        final String beerName = "Updated Beer";
+        beerDTO.setBeerName(beerName);
+
+        ResponseEntity responseEntity = beerController.updateById(beer.getId(), beerDTO);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+
+        Beer updatedBeer = beerRepository.findById(beer.getId()).get();
+
+        assertThat(updatedBeer).isNotNull();
+        assertThat(updatedBeer.getBeerName()).isEqualTo(beerName);
+    }
+
+    @Test
+    void testUpdateNotFound() {
+        assertThrows(NotFoundException.class, () -> {
+            beerController.updateById(UUID.randomUUID(), BeerDTO.builder().build());
+        });
+    }
+    @Rollback
+    @Transactional
+    @Test
+    void testDeleteById() {
+        Beer beer = beerRepository.findAll().get(0);
+        BeerDTO beerDTO = beerMapper.beerToBeerDto(beer);
+
+        ResponseEntity responseEntity = beerController.deleteById(beer.getId());
+
+        assertThat(beerRepository.findById(beer.getId()).isEmpty());
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+    }
+
+    @Test
+    void testDeleteByIdNotFound() {
+        assertThrows(NullPointerException.class, () -> {
+            beerController.deleteById(UUID.randomUUID());
+        });
     }
 }
