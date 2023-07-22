@@ -1,5 +1,6 @@
 package com.springframework.service;
 
+import com.springframework.entities.Customer;
 import com.springframework.mappers.CustomerMapper;
 import com.springframework.model.CustomerDTO;
 import com.springframework.repositories.CustomerRepository;
@@ -29,12 +30,14 @@ public class CustomerServiceJPA implements CustomerService {
 
     @Override
     public Optional<CustomerDTO> getCustomerById(UUID id) {
-        return Optional.empty();
+        return Optional.ofNullable(customerMapper.customerToCustomerDto(customerRepository.findById(id)
+                .orElse(null)));
     }
 
     @Override
     public CustomerDTO saveNewCustomer(CustomerDTO customer) {
-        return null;
+        return customerMapper.customerToCustomerDto(customerRepository.save(customerMapper.customerDtoTocustomer(customer)));
+
     }
 
     @Override

@@ -7,6 +7,8 @@ import com.springframework.repositories.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,8 +44,8 @@ class CustomerControllerIT {
     @Test
     void testGetById() {
         Customer customer = customerRepository.findAll().get(0);
-        CustomerDTO customerDTO = customerController.getCustomerById(customer.getId());
-        assertThat(customerDTO).isNotNull();
+        CustomerDTO dto = customerController.getCustomerById(customer.getId());
+        assertThat(dto).isNotNull();
     }
 
     @Test
@@ -52,4 +54,23 @@ class CustomerControllerIT {
             customerController.getCustomerById(UUID.randomUUID());
         });
     }
+    @Rollback
+    @Transactional
+    @Test
+    void saveNewCustomerTest() {
+        CustomerDTO customerDTO = CustomerDTO.builder()
+                .name("New Customer")
+                .build();
+
+        ResponseEntity responseEntity = customerController.handlePost(customerDTO);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
+        assertThat(responseEntity.getHeaders().getLocation()).isNotNull();
+
+        String[] locationUUID = responseEntity.getHeaders().getLocation().getPath().split("/");
+        UUID savedUUID = UUID.fromString(locationUUID[4]);
+
+        Customer customer = customerRepository.findById(savedUUID).get();
+
+        assertThat(customer).isNotNull();
+  }
 }
