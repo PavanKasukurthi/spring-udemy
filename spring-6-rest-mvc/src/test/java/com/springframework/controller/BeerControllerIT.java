@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 class BeerControllerIT {
     @Autowired
@@ -123,7 +124,7 @@ class BeerControllerIT {
 
     @Test
     void testDeleteByIdNotFound() {
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             beerController.deleteById(UUID.randomUUID());
         });
     }
