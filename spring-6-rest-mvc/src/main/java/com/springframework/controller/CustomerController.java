@@ -24,7 +24,7 @@ public class CustomerController {
     public static final String CUSTOMER_PATH_ID = CUSTOMER_PATH + "/{customerId}";
 
     @PatchMapping(CUSTOMER_PATH_ID)
-    public ResponseEntity patchById(@PathVariable("customerId") UUID customerId, @RequestBody CustomerDTO customer){
+    public ResponseEntity patchById(@PathVariable("customerId") UUID customerId,@Validated @RequestBody CustomerDTO customer){
         customerService.patchCustomerById(customerId, customer);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
