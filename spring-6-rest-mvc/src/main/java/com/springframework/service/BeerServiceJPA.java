@@ -1,5 +1,6 @@
 package com.springframework.service;
 
+import com.springframework.entities.Beer;
 import com.springframework.mappers.BeerMapper;
 import com.springframework.model.BeerDTO;
 import com.springframework.repositories.BeerRepository;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,10 +22,22 @@ public class BeerServiceJPA implements BeerService {
     private final BeerRepository beerRepository;
     private final BeerMapper beerMapper;
     @Override
-    public List<BeerDTO> listBeers() {
-        return beerRepository.findAll()
-                .stream().map(beerMapper::beerToBeerDto)
+    public List<BeerDTO> listBeers(String beerName) {
+
+        List<Beer> beerList;
+
+        if(beerName != null){
+            beerList = listBeerByName(beerName);
+        } else {
+            beerList = beerRepository.findAll();
+        }
+        return beerList.stream()
+                .map(beerMapper::beerToBeerDto)
                 .collect(Collectors.toList());
+    }
+
+    List<Beer> listBeerByName(String beerName){
+        return new ArrayList<>();
     }
 
     @Override
