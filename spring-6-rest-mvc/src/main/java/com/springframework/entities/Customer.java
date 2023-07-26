@@ -26,6 +26,8 @@ public class Customer {
     @NotNull
     @NotBlank
     private String name;
+    @Column(length=255)
+    private String email;
     @Version
     private Integer version;
     private LocalDateTime createdDate;
