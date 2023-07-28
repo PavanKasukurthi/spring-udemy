@@ -53,7 +53,7 @@ class BeerControllerTest {
     //PATCH
     @Test
     void testPatchBeer() throws Exception {
-        BeerDTO beer = beerServiceImpl.listBeers(any(), any(), any(), 1, 25).getContent().get(0);
+        BeerDTO beer = beerServiceImpl.listBeers(any(), any(), any(), 1, 25).getContent().get(1);
 
         Map<String, Object> beerMap = new HashMap<>();
         beerMap.put("beerName", "New Name");
