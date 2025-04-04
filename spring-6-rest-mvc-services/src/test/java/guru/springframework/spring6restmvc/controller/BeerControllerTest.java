@@ -1,21 +1,23 @@
-package guru.springframework.spring6resttemplate.client;
+package guru.springframework.spring6restmvc.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
-class BeerClientImplTest {
+class BeerControllerTest {
+
     @Autowired
-    BeerClientImpl beerClient;
+    BeerController beerController;
 
     @Test
-    void listBeers() {
-        beerClient.listBeers();
-    }
+    void getBeerById() {
 
-    @Test
-    void testListBeers() {
+        System.out.println(beerController.getBeerById(UUID.randomUUID()));
+
     }
 }

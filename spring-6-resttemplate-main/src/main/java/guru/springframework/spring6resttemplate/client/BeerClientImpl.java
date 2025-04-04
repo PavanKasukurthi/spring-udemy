@@ -1,22 +1,21 @@
 package guru.springframework.spring6resttemplate.client;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import guru.springframework.spring6resttemplate.model.BeerDTO;
-import guru.springframework.spring6resttemplate.model.RestPageImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
 public class BeerClientImpl implements BeerClient {
-
     private final RestTemplateBuilder restTemplateBuilder;
 
     private static final String BASE_URL = "http://localhost:8080";
@@ -25,9 +24,21 @@ public class BeerClientImpl implements BeerClient {
     public Page<BeerDTO> listBeers() {
         RestTemplate restTemplate = restTemplateBuilder.build();
 
-        ResponseEntity<RestPageImpl> stringResponse = restTemplate.getForEntity(BASE_URL + GET_BEER_PATH, RestPageImpl.class);
+        ResponseEntity<PageImpl> stringResponse =
+                restTemplate.getForEntity(BASE_URL + GET_BEER_PATH, PageImpl.class);
 
-
+//        ResponseEntity<Map> mapResponse =
+//                restTemplate.getForEntity(BASE_URL + GET_BEER_PATH, Map.class);
+//
+//        ResponseEntity<JsonNode> jsonResponse =
+//                restTemplate.getForEntity(BASE_URL + GET_BEER_PATH, JsonNode.class);
+//
+//        jsonResponse.getBody().findPath("_embedded").elements()
+//            .forEachRemaining(node -> {
+//                System.out.println(node.get("beerName").asText());
+//            });
+//
+//        System.out.println(stringResponse.getBody());
         return null;
     }
 }
