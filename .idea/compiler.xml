@@ -9,7 +9,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="crud" />
         <module name="sdjpa-springdatarest" />
-        <module name="spring-6-rest-mvc (1) (guru.springframework)" />
         <module name="mycoolapp" />
         <module name="spring-6-resttemplate" />
       </profile>
@@ -25,6 +24,18 @@
         </processorPath>
         <module name="spring-6-rest-mvc" />
       </profile>
+      <profile name="Annotation profile for spring-6-rest-mvc (1) (guru.springframework)" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok-mapstruct-binding/0.2.0/lombok-mapstruct-binding-0.2.0.jar" />
+        </processorPath>
+        <module name="spring-6-rest-mvc (1) (guru.springframework)" />
+      </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
@@ -33,7 +44,7 @@
       <module name="mycoolapp" options="-parameters" />
       <module name="sdjpa-springdatarest" options="-parameters" />
       <module name="spring-6-rest-mvc" options="-parameters -Amapstruct.defaultComponentModel=spring" />
-      <module name="spring-6-rest-mvc (1) (guru.springframework)" options="-parameters" />
+      <module name="spring-6-rest-mvc (1) (guru.springframework)" options="-parameters -Amapstruct.defaultComponentModel=spring" />
       <module name="spring-6-resttemplate" options="-parameters" />
     </option>
   </component>
