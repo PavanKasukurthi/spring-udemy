@@ -1,7 +1,9 @@
 package guru.springframework.spring6restmvc.services;
 
 import guru.springframework.spring6restmvc.model.Customer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 @Service
+@RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
     Map<UUID, Customer> customerMap;
@@ -48,7 +51,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> getCustomers() {
+    public List<Customer> getAllCustomers() {
         return new ArrayList<>(customerMap.values());
     }
 
@@ -56,5 +59,45 @@ public class CustomerServiceImpl implements CustomerService {
 
     public Customer getCustomerById(UUID customerId) {
         return customerMap.get(customerId);
+    }
+
+    @Override
+    public Customer saveNewCustomer(Customer customer) {
+        Customer savedCustomer = Customer.builder()
+                                    .id(UUID.randomUUID())
+                                    .version(customer.getVersion())
+                                    .updateDate(LocalDateTime.now())
+                                    .createdDate(LocalDateTime.now())
+                                    .name(customer.getName())
+                                    .build();
+
+        customerMap.put(savedCustomer.getId(), savedCustomer);
+
+        return savedCustomer;
+    }
+
+    @Override
+    public void updateCustomerById(UUID customerId, Customer customer) {
+        Customer existing = customerMap.get(customerId);
+        existing.setName(customer.getName());
+        existing.setVersion(customer.getVersion());
+    }
+
+    @Override
+    public void deleteById(UUID customerId) {
+        customerMap.remove(customerId);
+    }
+
+    @Override
+    public void patchById(UUID customerId, Customer customer) {
+        Customer existing = customerMap.get(customerId);
+
+        if(StringUtils.hasText(customer.getName())){
+            existing.setName(customer.getName());
+        }
+
+        if(customer.getVersion() != null){
+            existing.setVersion(customer.getVersion());
+        }
     }
 }
