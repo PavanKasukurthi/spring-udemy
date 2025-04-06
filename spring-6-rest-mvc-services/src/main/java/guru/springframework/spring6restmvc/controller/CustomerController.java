@@ -9,6 +9,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
@@ -54,6 +55,6 @@ public class CustomerController {
 
     @GetMapping("/{customerId}")
     public Customer getCustomerById(@PathVariable UUID customerId){
-        return customerService.getCustomerById(customerId);
+        return customerService.getCustomerById(customerId).orElseThrow(NotFoundException::new);
     }
 }

@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
@@ -57,8 +55,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
 
-    public Customer getCustomerById(UUID customerId) {
-        return customerMap.get(customerId);
+    public Optional<Customer> getCustomerById(UUID customerId) {
+        return Optional.of(customerMap.get(customerId));
     }
 
     @Override
