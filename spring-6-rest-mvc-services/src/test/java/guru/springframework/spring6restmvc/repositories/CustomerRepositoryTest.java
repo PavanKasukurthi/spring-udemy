@@ -18,7 +18,7 @@ class CustomerRepositoryTest {
                         .name("testCustomer")
                         .build());
 
-        assertThat(customer).isNull();
+        assertThat(customer).isNotNull();
         assertThat(customer.getId()).isNotNull();
 
     }
