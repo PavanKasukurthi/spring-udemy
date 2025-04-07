@@ -55,7 +55,7 @@ public class BeerController {
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
     @GetMapping
-    public List<BeerDTO> listBeer(){
+    public List<BeerDTO> listBeers(){
         return beerService.listBeers();
     }
 

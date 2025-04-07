@@ -53,16 +53,6 @@ class CustomerControllerTest {
     ArgumentCaptor<CustomerDTO> customerArgumentCaptor;
 
     @Test
-    void getCustomerIdNotFound() throws Exception{
-        given(customerService.getCustomerById(any(UUID.class)))
-                .willThrow(NotFoundException.class)
-                .willReturn(Optional.empty());
-
-        mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID, UUID.randomUUID()))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
     void testPatchCustomer() throws Exception {
         CustomerDTO customer = customerServiceImpl.getAllCustomers().get(0);
 
@@ -74,7 +64,7 @@ class CustomerControllerTest {
                         .content(objectMapper.writeValueAsString(customerMap)))
                 .andExpect(status().isNoContent());
 
-        verify(customerService).patchById(uuidArgumentCaptor.capture(),
+        verify(customerService).patchCustomerById(uuidArgumentCaptor.capture(),
                 customerArgumentCaptor.capture());
 
         assertThat(uuidArgumentCaptor.getValue()).isEqualTo(customer.getId());
@@ -90,7 +80,7 @@ class CustomerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        verify(customerService).deleteById(uuidArgumentCaptor.capture());
+        verify(customerService).deleteCustomerById(uuidArgumentCaptor.capture());
 
         assertThat(customer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
     }
@@ -138,6 +128,15 @@ class CustomerControllerTest {
     }
 
     @Test
+    void getCustomerByIdNotFound() throws Exception {
+
+        given(customerService.getCustomerById(any(UUID.class))).willReturn(Optional.empty());
+
+        mockMvc.perform(get(CustomerController.CUSTOMER_PATH_ID, UUID.randomUUID()))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void getCustomerById() throws Exception {
         CustomerDTO customer = customerServiceImpl.getAllCustomers().get(0);
 
@@ -150,3 +149,13 @@ class CustomerControllerTest {
                 .andExpect(jsonPath("$.name", is(customer.getName())));
     }
 }
+
+
+
+
+
+
+
+
+
+
