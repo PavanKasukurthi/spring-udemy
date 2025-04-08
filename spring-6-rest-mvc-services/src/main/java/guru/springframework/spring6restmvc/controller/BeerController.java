@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,15 +26,15 @@ public class BeerController {
     private final BeerService beerService;
 
     @PatchMapping("/{beerId}")
-    public ResponseEntity updateBeerPatchById(@PathVariable UUID beerId,@RequestBody BeerDTO beer){
+    public ResponseEntity updateBeerPatchById(@PathVariable UUID beerId,@Validated @RequestBody BeerDTO beer) {
 
         beerService.patchById(beerId, beer);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{beerId}")
-    public ResponseEntity deleteById(@PathVariable UUID beerId){
-        if(!beerService.deleteById(beerId)){
+    public ResponseEntity deleteById(@PathVariable UUID beerId) {
+        if (!beerService.deleteById(beerId)) {
             throw new NotFoundException();
         }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -41,16 +42,16 @@ public class BeerController {
 
 
     @PutMapping("/{beerId}")
-    public ResponseEntity updateById(@PathVariable UUID beerId,@RequestBody BeerDTO beer){
+    public ResponseEntity updateById(@PathVariable UUID beerId,@Validated @RequestBody BeerDTO beer) {
 
-        if(beerService.updateBeerById(beerId, beer).isEmpty()){
+        if (beerService.updateBeerById(beerId, beer).isEmpty()) {
             throw new NotFoundException();
         }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody BeerDTO beer){
+    public ResponseEntity handlePost(@Validated @RequestBody BeerDTO beer) {
         BeerDTO savedBeer = beerService.saveNewBeer(beer);
 
         HttpHeaders headers = new HttpHeaders();
@@ -58,13 +59,14 @@ public class BeerController {
 
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
+
     @GetMapping
-    public List<BeerDTO> listBeers(){
+    public List<BeerDTO> listBeers() {
         return beerService.listBeers();
     }
 
     @GetMapping("/{beerId}")
-    public BeerDTO getBeerById(@PathVariable UUID beerId){
+    public BeerDTO getBeerById(@PathVariable UUID beerId) {
 
         log.debug("Get Beer by Id - in controller");
 
